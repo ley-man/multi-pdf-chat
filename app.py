@@ -8,8 +8,14 @@ def main():
   st.text_input("Ask a question regarding your docs")
 
   with st.sidebar:
-     st.subheader ("Upload pdf documents :sunglasses:")  
-     st.file_uploader("Upload pdf documents", type=["pdf"])
+     st.subheader ("Please upload your docs")  
+     st.file_uploader("Click Process after uploading", type=["pdf"]
+                      ,accept_multiple_files=True)
+     st.button("Process")
+
+
+
+
 
 
 
