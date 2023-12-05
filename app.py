@@ -4,7 +4,8 @@ import os
 from streamlit_extras.add_vertical_space import add_vertical_space
 from PyPDF2 import PdfReader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores import FAISS
+from langchain.llms import OpenAI
 
 
 def get_pdf_text(pdf_docs):
@@ -59,8 +60,8 @@ def main():
                     pdf_text = get_pdf_text(pdf_docs)
                 # divide in chunks
                 text_chunks = get_chunks_tiktoken(pdf_text)
-                # st.write(text_chunks)
                 # create embeddings
+				# 
 
         #  Markdown
         add_vertical_space(num_lines=3)
