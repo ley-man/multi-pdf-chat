@@ -3,9 +3,10 @@ from dotenv import load_dotenv
 import os
 # from streamlit_extras.add_vertical_space import add_vertical_space
 from PyPDF2 import PdfReader
+import langchain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
-from langchain.embeddings import OpenAIEmbeddings
+from langchain.embeddings import OpenAIEmbeddings, HuggingFaceInstructEmbeddings
 
 
 def v_spacer(height, sb=False) -> None:
@@ -51,6 +52,15 @@ def get_vectorstore(text_chunks):
     vectorstore = FAISS.from_texts(text_chunks, embeddings)
     return vectorstore
 
+# Instructor Embeddings (FREE!)
+
+
+def get_vectorstore_instructor(text_chunks):
+    embeddings = HuggingFaceInstructEmbeddings(
+        model_name='hkunlp/instructor-xl')
+    vectorstore = FAISS.from_texts(text_chunks, embeddings)
+    return vectorstore
+
 
 def main():
 
@@ -75,8 +85,10 @@ def main():
                 # divide in chunks
                 text_chunks = get_chunks_tiktoken(pdf_text)
                 # create embeddings -> create vectorstore
-                vectorstore = get_vectorstore(text_chunks)
+                # vectorstore = get_vectorstore(text_chunks)
+                vectorstore = get_vectorstore_instructor(text_chunks)
 
+                st.write(vectorstore)
         #  Markdown
             # Add vertical space
         v_spacer(height=3, sb=True)
