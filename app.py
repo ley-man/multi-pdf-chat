@@ -1,11 +1,19 @@
 import streamlit as st
 from dotenv import load_dotenv
 import os
-from streamlit_extras.add_vertical_space import add_vertical_space
+# from streamlit_extras.add_vertical_space import add_vertical_space
 from PyPDF2 import PdfReader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
-from langchain.llms import OpenAI
+from langchain.embeddings import OpenAIEmbeddings
+
+
+def v_spacer(height, sb=False) -> None:
+    for _ in range(height):
+        if sb:
+            st.sidebar.write('\n')
+        else:
+            st.write('\n')
 
 
 def get_pdf_text(pdf_docs):
@@ -38,6 +46,12 @@ def get_chunks_tiktoken(text):
     return chunks
 
 
+def get_vectorstore(text_chunks):
+    embeddings = OpenAIEmbeddings()
+    vectorstore = FAISS.from_texts(text_chunks, embeddings)
+    return vectorstore
+
+
 def main():
 
     load_dotenv()
@@ -60,11 +74,12 @@ def main():
                     pdf_text = get_pdf_text(pdf_docs)
                 # divide in chunks
                 text_chunks = get_chunks_tiktoken(pdf_text)
-                # create embeddings
-				# 
+                # create embeddings -> create vectorstore
+                vectorstore = get_vectorstore(text_chunks)
 
         #  Markdown
-        add_vertical_space(num_lines=3)
+            # Add vertical space
+        v_spacer(height=3, sb=True)
         st.markdown('''
      ## About
      This app is designed to chat with your personal pdf articles and books.
