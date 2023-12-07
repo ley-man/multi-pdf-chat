@@ -1,7 +1,7 @@
 css = '''
 <style>
 .chat-message {
-    padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1rem; display: flex
+    padding: 0.6rem; border-radius: 0.9rem; margin-bottom: 1rem; display: flex
 }
 .chat-message.user {
     background-color: #2b313e
@@ -28,7 +28,7 @@ css = '''
 bot_template = '''
 <div class="chat-message bot">
     <div class="avatar">
-        <img src="thumbnails\bot.png">
+        <img src="https://i.postimg.cc/MT277gLs/bot.png">
     </div>
     <div class="message">{{MSG}}</div>
 </div>
@@ -37,7 +37,7 @@ bot_template = '''
 user_template = '''
 <div class="chat-message user">
     <div class="avatar">
-        <img src="https://i.ibb.co/cN0nmSj/Screenshot-2023-05-28-at-02-37-21.png">
+        <img src="https://i.postimg.cc/fLcxBBnM/user-real-person.png">
     </div>    
     <div class="message">{{MSG}}</div>
 </div>

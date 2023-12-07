@@ -86,9 +86,9 @@ def main():
     st.subheader("Chat with multiple pdf documents :sunglasses:")
     st.text_input("Ask a question regarding your docs")
     st.write(user_template.replace(
-        '{{MSG}}', "Hello Human"), unsafe_allow_html=True)
+        '{{MSG}}', "Hello Bot"), unsafe_allow_html=True)
     st.write(bot_template.replace(
-        "{{MSG}}", "Hello Boto"), unsafe_allow_html=True)
+        "{{MSG}}", "Hello Human"), unsafe_allow_html=True)
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
 
