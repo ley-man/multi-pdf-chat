@@ -1,7 +1,5 @@
 import streamlit as st
 from dotenv import load_dotenv
-import os
-# from streamlit_extras.add_vertical_space import add_vertical_space
 from PyPDF2 import PdfReader
 import langchain
 from langchain.chat_models import ChatOpenAI
@@ -77,6 +75,18 @@ def get_conv_chain(vectorstore):
     return conversation_chain
 
 
+def handle_user_input(user_question):
+    response = st.session_state.conversation({'question': user_question})
+    st.session_state.chat_history = response['chat_history']
+    for idx, message in enumerate(st.session_state.chat_history):
+        if idx % 2 == 0:
+            st.write(user_template.replace(
+                "{{MSG}}", message.content), unsafe_allow_html=True)
+        else:
+            st.write(bot_template.replace(
+                "{{MSG}}", message.content), unsafe_allow_html=True)
+
+
 def main():
 
     load_dotenv()
@@ -84,13 +94,13 @@ def main():
     st.set_page_config(page_title="Multi-pdf-chat", page_icon=":sharks:")
     st.write(css, unsafe_allow_html=True)
     st.subheader("Chat with multiple pdf documents :sunglasses:")
-    st.text_input("Ask a question regarding your docs")
-    st.write(user_template.replace(
-        '{{MSG}}', "Hello Bot"), unsafe_allow_html=True)
-    st.write(bot_template.replace(
-        "{{MSG}}", "Hello Human"), unsafe_allow_html=True)
+    user_ques = st.text_input("Ask a question regarding your docs")
+    if user_ques:
+        handle_user_input(user_ques)
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = None
 
     with st.sidebar:
 
@@ -112,7 +122,7 @@ def main():
                 vectorstore = get_vectorstore(text_chunks)
 
                 # vectorstore = get_vectorstore_instructor(text_chunks)
-                st.write(vectorstore)
+                st.write(":green[Documents processed]")
 
                 # Create conversation chain
                 st.session_state.conversation = get_conv_chain(vectorstore)
